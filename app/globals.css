@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
+/*
+ * 設計系統：「紙與印」
+ * 米白紙張底色 + 墨黑文字 + 朱紅印泥作為唯一強調色；標題用襯線字體，內文用無襯線字體。
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f5f1e8;
+  --paper-deep: #ede7da;
+  --surface: #fffdf8;
+  --ink: #16181d;
+  --ink-soft: #3b3e46;
+  --muted: #736d62;
+  --faint: #a39c8f;
+  --line: #e4ddcf;
+  --line-strong: #cdc3b0;
+
+  --seal: #a8321e;
+  --seal-hover: #8c2817;
+  --seal-tint: #f6e5dd;
+
+  --brass: #9c7433;
+  --jade: #2e6a4e;
+  --jade-tint: #e3eee6;
+  --ochre: #a86c12;
+  --ochre-tint: #f6ebd4;
+  --danger: #a8321e;
+  --danger-tint: #f6e5dd;
+
+  --night: #121419;
+  --night-soft: #1c1f26;
+  --night-line: #2c3039;
+  --night-text: #e9e4d8;
+  --night-muted: #9a9486;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-seal: var(--seal);
+  --color-seal-hover: var(--seal-hover);
+  --color-seal-tint: var(--seal-tint);
+  --color-brass: var(--brass);
+  --color-jade: var(--jade);
+  --color-jade-tint: var(--jade-tint);
+  --color-ochre: var(--ochre);
+  --color-ochre-tint: var(--ochre-tint);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+  --color-night: var(--night);
+  --color-night-soft: var(--night-soft);
+  --color-night-line: var(--night-line);
+  --color-night-text: var(--night-text);
+  --color-night-muted: var(--night-muted);
+
+  --font-sans: var(--font-geist-sans), "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --font-serif: var(--font-noto-serif-tc), "Songti TC", "PMingLiU", serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --shadow-paper: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 30px 60px -40px rgb(22 24 29 / 0.35),
+    0 2px 6px -2px rgb(22 24 29 / 0.06);
+  --shadow-lift: 0 40px 80px -48px rgb(22 24 29 / 0.5), 0 8px 24px -12px rgb(22 24 29 / 0.12);
+
+  --animate-rise: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "palt" 1;
+}
+
+::selection {
+  background: var(--seal-tint);
+  color: var(--seal-hover);
+}
+
+/* 紙張的細微顆粒感 */
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 細格線背景（Landing hero 用） */
+.bg-ruled {
+  background-image: linear-gradient(to right, rgb(22 24 29 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(22 24 29 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* 小標：等寬字、全大寫、加寬字距 */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* FAQ 的展開箭頭 */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

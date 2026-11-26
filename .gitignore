@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 本機對話紀錄，不上傳
+CONVERSATION_LOG.md
